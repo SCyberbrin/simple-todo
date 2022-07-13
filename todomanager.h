@@ -8,8 +8,12 @@ class todoManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit todoManager(QObject *parent = nullptr, QTreeWidget *treeWid = nullptr);
+    explicit todoManager(QTreeWidget *treeWid, QObject *parent = nullptr);
+    QTreeWidgetItem *addTask(QString name, QString description, QTreeWidgetItem *group = nullptr);
+    QTreeWidgetItem *addGroup(QString name, QString description);
 
+private:
+    QTreeWidget *TreeWid;
 
 signals:
 

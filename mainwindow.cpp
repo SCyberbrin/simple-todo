@@ -1,31 +1,18 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
-    /*QFileSystemModel *model = new QFileSystemModel;
-    model->setRootPath(QDir::currentPath());*/
-
-
     ui->todoList->setColumnCount(2);
 
-    QTreeWidgetItem *itm = new QTreeWidgetItem(ui->todoList);
+    todoManager *todo = new todoManager(ui->todoList);
 
-    itm->setText(0, "Hallo");
-    itm->setText(1, "world");
+    QTreeWidgetItem *group = todo->addGroup("groupTest", "");
 
-    ui->todoList->addTopLevelItem(itm);
-
-    // Add Child
-    QTreeWidgetItem *childItm = new QTreeWidgetItem();
-    childItm->setText(0, "hello2");
-    childItm->setText(1, "world2");
-
-    itm->addChild(childItm);
+    todo->addTask("test", "test2", group);
 
 }
 
