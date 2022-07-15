@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>Decline.ico</file>
+        <file>folder.ico</file>
+        <file>delete.ico</file>
+        <file>Save.ico</file>
+        <file>file.ico</file>
+    </qresource>
+</RCC>

@@ -3,17 +3,25 @@
 
 #include <QtWidgets>
 #include <QObject>
+#include <QtSql>
+
+#include "SQLTODO.h"
 
 class todoManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit todoManager(QTreeWidget *treeWid, QObject *parent = nullptr);
-    QTreeWidgetItem *addTask(QString name, QString description, QTreeWidgetItem *group = nullptr);
-    QTreeWidgetItem *addGroup(QString name, QString description);
+    explicit todoManager(QObject *parent = nullptr);
+    //void getTodo(int todoId);
+
+public slots:
+    void test(void);
+    void getTodosToTree(QTreeWidget *tree);
+    SQLTODO *getFullTodoInfo(int todoId);
 
 private:
-    QTreeWidget *TreeWid;
+    //QList<SQLTODO> todos;
+    QSqlDatabase db;
 
 signals:
 

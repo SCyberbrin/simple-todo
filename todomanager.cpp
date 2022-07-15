@@ -1,36 +1,69 @@
 #include "todomanager.h"
 
 #include <QDebug>
-todoManager::todoManager(QTreeWidget *treeWid, QObject *parent)
+todoManager::todoManager(QObject *parent)
 : QObject{parent}
 {
-    TreeWid = treeWid;
+    QDir databasePath;
+    QString path = databasePath.currentPath()+"/myDb.db";
+
+    db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName(path);
+
+    if (db.open()) {
+        QSqlQuery query;
+        query.exec("CREATE TABLE IF NOT EXISTS todos "
+                  "(id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                  "name varchar(20) not null, "
+                  "description varchar(30), "
+                  "done INTEGER DEFAULT 0, "
+                  ");");
+        query.clear();
+    }
+
 }
 
-
-QTreeWidgetItem *todoManager::addTask(QString name, QString description, QTreeWidgetItem *group)
+void todoManager::test()
 {
-    if (group == nullptr) {
-        QTreeWidgetItem *itm = new QTreeWidgetItem(TreeWid);
-        itm->setText(0, name);
-        itm->setText(1, description);
-        return itm;
-    } else {
-        QTreeWidgetItem *itm = new QTreeWidgetItem();
-        itm->setText(0, name);
-        itm->setText(1, description);
-        group->addChild(itm);
-        return itm;
+    qDebug() << "hi";
+}
+
+void todoManager::getTodosToTree(QTreeWidget *tree)
+{
+    QSqlQuery query("SELECT id, name FROM todos");
+    while (query.next()) {
+        int id = query.value(0).toInt();
+        QString name = query.value(1).toString();
+
+        QTreeWidgetItem *itm = new QTreeWidgetItem(tree);
+        itm->setText(0, QString::number(id));
+        itm->setText(1, name);
     }
 }
 
-QTreeWidgetItem *todoManager::addGroup(QString name, QString description)
+SQLTODO *todoManager::getFullTodoInfo(int todoId)
 {
-    QTreeWidgetItem *itm = new QTreeWidgetItem(TreeWid);
+    if (!db.isOpen()) return new SQLTODO();
 
-    itm->setText(0, name);
-    itm->setText(1, description);
+    SQLTODO *todo = new SQLTODO();
 
-    TreeWid->addTopLevelItem(itm);
-    return itm;
+    QString sql = "SELECT id, name, description, done FROM todos where id = " + QString::number(todoId);
+
+    qInfo() << sql;
+
+    // get all info from db to the todoEditor
+    QSqlQuery query(sql);
+    while (query.next()) {
+        int id = query.value(0).toInt();
+        QString name = query.value(1).toString();
+        QString description = query.value(2).toString();
+        bool done = query.value(3).toBool();
+
+        todo->id = id;
+        todo->name = name;
+        todo->description = description;
+        todo->done = done;
+    }
+    query.clear();
+    return todo;
 }
