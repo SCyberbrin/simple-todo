@@ -118,6 +118,10 @@ void MainWindow::on_todoList_itemClicked(QTreeWidgetItem *item, int column)
 
 void MainWindow::on_actionDelete_triggered()
 {
+    int ret = QMessageBox::question(this, tr("Are you sure?"),
+                          tr("Are you sure that you want to delete this?"));
+
+    if (ret == QMessageBox::No) return;
     QTreeWidgetItem *item = ui->todoList->selectedItems()[0];
 
     todo->deleteTodoToDB(item->text(0).toInt());
@@ -132,6 +136,7 @@ void MainWindow::on_actionNew_triggered()
     currentTodoDisplayed = SQLTODO();
     closeDisplay();
     openDisplay();
+    ui->actionDelete->setDisabled(true);
 
     displayCurrentTodo();
 }
@@ -139,6 +144,12 @@ void MainWindow::on_actionNew_triggered()
 
 void MainWindow::on_actionSaveTodo_triggered()
 {
+    if (ui->todoNameLineEdit->text().isEmpty()){
+        QMessageBox::warning(this, tr("Warning"),
+                             tr("Please add a name."),
+                             QMessageBox::Ok);
+        return;
+    }
     currentTodoDisplayed.name = ui->todoNameLineEdit->text();
     currentTodoDisplayed.description = ui->todoDescriptionTextEdit->toPlainText();
     currentTodoDisplayed.done = ui->todoDonecheckBox->checkState();

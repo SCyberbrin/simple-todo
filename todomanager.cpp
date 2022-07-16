@@ -9,16 +9,22 @@ todoManager::todoManager(QObject *parent)
 
     db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName(path);
+    db.open();
 
-    if (db.open()) {
+    if (db.isOpen()) {
         QSqlQuery query;
         query.exec("CREATE TABLE IF NOT EXISTS todos "
                   "(id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                  "name varchar(20) not null, "
+                  "name varchar(20) NOT NULL, "
                   "description varchar(30), "
-                  "done INTEGER DEFAULT 0, "
+                  "done INTEGER DEFAULT 0"
                   ");");
+        qInfo() << query.lastError().text();
         query.clear();
+    }else{
+        QMessageBox::critical(nullptr, tr("Critical"),
+                              db.lastError().text());
+
     }
 
 }
