@@ -10,19 +10,17 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->todoList->setColumnCount(2);
 
-    todo->getTodosToTree(ui->todoList);
+    updateTodoList();
 
-    //QTreeWidgetItem *group = todo->addGroupQTreeWidget("groupTest", "");
-
-    //todo->addTaskQTreeWidget("test", "test2", group);
-    //todo->getTodo(2);
     closeDisplay();
 
-    connect(ui->actionNewGroup, SIGNAL(triggered(bool)), todo, SLOT(test(void)));
+
+
+    /*connect(ui->actionNewGroup, SIGNAL(triggered(bool)), todo, SLOT(test(void)));
     connect(ui->actionnew, SIGNAL(triggered(bool)), todo, SLOT(test(void)));
 
 
-    connect(ui->actionDelete, SIGNAL(triggered(bool)), this, SLOT(closeDisplay()));
+    connect(ui->actionDelete, SIGNAL(triggered(bool)), this, SLOT(closeDisplay()));*/
 
 }
 
@@ -35,13 +33,13 @@ QTreeWidgetItem *MainWindow::addTaskQTreeWidget(int id, QString name, QTreeWidge
 {
     if (group == nullptr) {
         QTreeWidgetItem *itm = new QTreeWidgetItem(ui->todoList);
-        itm->setText(0, name);
-        itm->setText(1, QString(id));
+        itm->setText(0, QString::number(id));
+        itm->setText(1, name);
         return itm;
     } else {
         QTreeWidgetItem *itm = new QTreeWidgetItem();
-        itm->setText(0, name);
-        itm->setText(1, QString(id));
+        itm->setText(0, QString::number(id));
+        itm->setText(1, name);
         group->addChild(itm);
         return itm;
     }
@@ -52,14 +50,25 @@ QTreeWidgetItem *MainWindow::addGroupQTreeWidget(int id, QString name)
     QTreeWidgetItem *itm = new QTreeWidgetItem(ui->todoList);
 
     itm->setText(0, name);
-    itm->setText(1, QString(id));
+    itm->setText(1, QString::number(id));
 
     ui->todoList->addTopLevelItem(itm);
     return itm;
 }
 
+void MainWindow::updateTodoList(void)
+{
+    ui->todoList->clear();
+    QList<SQLTODO> allTodos = todo->getAllTodosFromDB();
 
-void MainWindow::closeDisplay()
+    for (int i = 0; i < allTodos.size(); i++) {
+        SQLTODO todo = allTodos.at(i);
+        addTaskQTreeWidget(todo.id, todo.name);
+    }
+}
+
+
+void MainWindow::closeDisplay(void)
 {
     ui->todoNameLineEdit->clear();
     ui->todoNameLineEdit->setDisabled(true);
@@ -67,10 +76,14 @@ void MainWindow::closeDisplay()
     ui->todoDescriptionTextEdit->clear();
     ui->todoDescriptionTextEdit->setDisabled(true);
 
+    ui->todoDonecheckBox->setCheckState(Qt::CheckState(0));
     ui->todoDonecheckBox->setDisabled(true);
+
+    ui->actionDelete->setDisabled(true);
+    ui->actionSaveTodo->setDisabled(true);
 }
 
-void MainWindow::openDisplay()
+void MainWindow::openDisplay(void)
 {
     ui->todoNameLineEdit->clear();
     ui->todoNameLineEdit->setDisabled(false);
@@ -79,21 +92,59 @@ void MainWindow::openDisplay()
     ui->todoDescriptionTextEdit->setDisabled(false);
 
     ui->todoDonecheckBox->setDisabled(false);
+
+    ui->actionDelete->setDisabled(false);
+    ui->actionSaveTodo->setDisabled(false);
+}
+
+void MainWindow::displayCurrentTodo()
+{
+    ui->todoNameLineEdit->setText(currentTodoDisplayed.name);
+
+    ui->todoDescriptionTextEdit->setPlainText(currentTodoDisplayed.description);
+    ui->todoDonecheckBox->setChecked(currentTodoDisplayed.done);
 }
 
 
 void MainWindow::on_todoList_itemClicked(QTreeWidgetItem *item, int column)
 {
-    SQLTODO *todoInfo = todo->getFullTodoInfo(item->text(0).toInt());
+    // IF USER CLICKES TODO
+    currentTodoDisplayed = todo->getTodoFromDB(item->text(0).toInt());
+
+    openDisplay();
+    displayCurrentTodo();
+}
+
+
+void MainWindow::on_actionDelete_triggered()
+{
+    QTreeWidgetItem *item = ui->todoList->selectedItems()[0];
+
+    todo->deleteTodoToDB(item->text(0).toInt());
+
+    closeDisplay();
+    updateTodoList();
+}
+
+
+void MainWindow::on_actionNew_triggered()
+{
+    currentTodoDisplayed = SQLTODO();
+    closeDisplay();
     openDisplay();
 
-    qInfo() << todoInfo->id;
-
-    ui->todoNameLineEdit->setText(todoInfo->name);
-
-    ui->todoDescriptionTextEdit->setPlainText(todoInfo->description);
-    ui->todoDonecheckBox->setChecked(todoInfo->done);
+    displayCurrentTodo();
+}
 
 
+void MainWindow::on_actionSaveTodo_triggered()
+{
+    currentTodoDisplayed.name = ui->todoNameLineEdit->text();
+    currentTodoDisplayed.description = ui->todoDescriptionTextEdit->toPlainText();
+    currentTodoDisplayed.done = ui->todoDonecheckBox->checkState();
+
+    closeDisplay();
+    todo->addTodoToDB(currentTodoDisplayed);
+    updateTodoList();
 }
 

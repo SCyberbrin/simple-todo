@@ -125,8 +125,9 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionDelete"/>
+   <addaction name="actionSaveTodo"/>
    <addaction name="separator"/>
-   <addaction name="actionnew"/>
+   <addaction name="actionNew"/>
    <addaction name="actionNewGroup"/>
   </widget>
   <action name="actionDelete">
@@ -141,7 +142,7 @@
     <string>delete Item</string>
    </property>
   </action>
-  <action name="actionnew">
+  <action name="actionNew">
    <property name="icon">
     <iconset resource="resource.qrc">
      <normaloff>:/icons/file.ico</normaloff>:/icons/file.ico</iconset>
@@ -163,6 +164,18 @@
    </property>
    <property name="toolTip">
     <string>Create new Folder</string>
+   </property>
+  </action>
+  <action name="actionSaveTodo">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/icons/Save.ico</normaloff>:/icons/Save.ico</iconset>
+   </property>
+   <property name="text">
+    <string>SaveTodo</string>
+   </property>
+   <property name="toolTip">
+    <string>Saves the Todo</string>
    </property>
   </action>
  </widget>

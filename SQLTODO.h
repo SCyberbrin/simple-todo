@@ -5,6 +5,7 @@
 
 class SQLTODO
 {
+// TODO: CREATE isEmpty FUNCTION
 public:
     int id;
     QString name;

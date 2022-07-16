@@ -16,11 +16,17 @@ public:
 
 public slots:
     void test(void);
-    void getTodosToTree(QTreeWidget *tree);
-    SQLTODO *getFullTodoInfo(int todoId);
+
+
+
+    void addTodoToDB(SQLTODO newTodo);
+    void deleteTodoToDB(int todoId);
+
+    SQLTODO getTodoFromDB(int todoId);
+    QList<SQLTODO> getAllTodosFromDB(void);
+
 
 private:
-    //QList<SQLTODO> todos;
     QSqlDatabase db;
 
 signals:

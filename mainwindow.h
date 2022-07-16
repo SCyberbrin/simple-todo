@@ -23,15 +23,25 @@ public:
     QTreeWidgetItem *addTaskQTreeWidget(int id, QString name, QTreeWidgetItem *group = nullptr);
     QTreeWidgetItem *addGroupQTreeWidget(int id, QString name);
 
+public slots:
+    void updateTodoList(void);
 
 private slots:
-    void closeDisplay();
-    void openDisplay();
+    void closeDisplay(void);
+    void openDisplay(void);
+    void displayCurrentTodo(void);
 
     void on_todoList_itemClicked(QTreeWidgetItem *item, int column);
+
+    void on_actionDelete_triggered();
+
+    void on_actionNew_triggered();
+
+    void on_actionSaveTodo_triggered();
 
 private:
     Ui::MainWindow *ui;
     todoManager *todo;
+    SQLTODO currentTodoDisplayed;
 };
 #endif // MAINWINDOW_H

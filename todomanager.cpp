@@ -28,42 +28,69 @@ void todoManager::test()
     qDebug() << "hi";
 }
 
-void todoManager::getTodosToTree(QTreeWidget *tree)
+void todoManager::addTodoToDB(SQLTODO newTodo)
 {
-    QSqlQuery query("SELECT id, name FROM todos");
-    while (query.next()) {
-        int id = query.value(0).toInt();
-        QString name = query.value(1).toString();
-
-        QTreeWidgetItem *itm = new QTreeWidgetItem(tree);
-        itm->setText(0, QString::number(id));
-        itm->setText(1, name);
+    QSqlQuery query;
+    if (getTodoFromDB(newTodo.id).name.isEmpty()){
+        // IF THIS TODO ISNT IN THE DB
+        query.prepare("INSERT INTO todos (name, description, done) "
+                      "VALUES (?, ?, ?)");
+    }else{
+        // IF THIS TODO IS IN THE DB
+        query.prepare("UPDATE todos SET name = ?, description = ?, done = ? "
+                      "WHERE id = " + QString::number(newTodo.id));
     }
+    query.bindValue(0, newTodo.name);
+    query.bindValue(1, newTodo.description);
+    query.bindValue(2, newTodo.done);
+    query.exec();
 }
 
-SQLTODO *todoManager::getFullTodoInfo(int todoId)
+void todoManager::deleteTodoToDB(int todoId)
 {
-    if (!db.isOpen()) return new SQLTODO();
+    QSqlQuery query;
+    query.prepare("DELETE FROM todos WHERE id = ?");
+    query.bindValue(0, todoId);
 
-    SQLTODO *todo = new SQLTODO();
+    query.exec();
+}
 
-    QString sql = "SELECT id, name, description, done FROM todos where id = " + QString::number(todoId);
-
-    qInfo() << sql;
-
+SQLTODO todoManager::getTodoFromDB(int todoId)
+{
     // get all info from db to the todoEditor
-    QSqlQuery query(sql);
-    while (query.next()) {
-        int id = query.value(0).toInt();
-        QString name = query.value(1).toString();
-        QString description = query.value(2).toString();
-        bool done = query.value(3).toBool();
+    SQLTODO todo;
 
-        todo->id = id;
-        todo->name = name;
-        todo->description = description;
-        todo->done = done;
+    QSqlQuery query;
+    query.prepare("SELECT id, name, description, done FROM todos where id = ?;");
+
+    query.bindValue(0, todoId);
+
+    query.exec();
+    while (query.next()) {
+
+        todo.id = query.value(0).toInt(); // id
+        todo.name = query.value(1).toString(); // name
+        todo.description = query.value(2).toString(); // description
+        todo.done = query.value(3).toBool(); // done
+
     }
     query.clear();
     return todo;
+}
+
+QList<SQLTODO> todoManager::getAllTodosFromDB()
+{
+    QList<SQLTODO> todoList;
+    QSqlQuery query("SELECT id, name FROM todos");
+    while (query.next()) {
+
+        SQLTODO todo = SQLTODO();
+
+        todo.id = query.value(0).toInt();
+        todo.name = query.value(1).toString();
+
+
+        todoList.append(todo);
+    }
+    return todoList;
 }
