@@ -10,5 +10,6 @@
 
 
 ### Todos:
-- [ ] Add Editing (e) Option.
-- [ ]
+- [x] Add Editing (e) Option.
+- [ ] Store the Todos to a file.
+- [ ] 

@@ -2,6 +2,8 @@
 #include <vector>
 #include "todo.cpp"
 
+#define clear cout << "\033[H\033[J"
+
 const std::string help_string = R"(
 ======================|Help|======================
 h: To Show this Page
@@ -75,6 +77,35 @@ bool hasDigit(const std::string &str)
     return result;
 }
 
+int getIdx(std::string str, const std::vector<todo> &_todos)
+{
+    if (!hasDigit(str))
+    {
+        std::cout << "Invalid Command" << std::endl;
+        return -1;
+    }
+
+    int selectedIdx = 0;
+
+    try
+    {
+        selectedIdx = std::stoi(str.erase(0, 2));
+    }
+    catch(std::invalid_argument)
+    {
+        std::cout << "Invalid Command" << std::endl;
+        return -1;
+    }
+
+    if (selectedIdx >= _todos.size())
+    {
+        std::cout << "Invalid Todo Index" << std::endl;
+        return -1;
+    }
+
+    return selectedIdx;
+}
+
 int main(int argc, char const *argv[])
 {
     std::vector<todo> todos;
@@ -100,34 +131,82 @@ int main(int argc, char const *argv[])
             todos.push_back(addTodo());
         } else if (i.substr(0, 1) == "r")
         {
-            if (!hasDigit(i))
-            {
-                std::cout << "Invalid Command" << std::endl;
-                continue;
-            }
+            int selectedIdx = getIdx(i, todos);
 
-            int selectedIdx = 0;
-
-            try
-            {
-                selectedIdx = std::stoi(i.erase(0, 2));
-            }
-            catch(std::invalid_argument)
-            {
-                std::cout << "Invalid Command" << std::endl;
-                continue;
-            }
-
-            if (selectedIdx >= todos.size())
-            {
-                std::cout << "Invalid Todo Index" << std::endl;
-                continue;
-            }
+            if (selectedIdx == -1) continue;
 
             todos.erase(todos.begin() + selectedIdx);
             
             std::cout << "Todo Nummber " << selectedIdx << " got Deleted!" << std::endl;
 
+        } else if (i.substr(0, 1) == "e")
+        {
+            int selectedIdx = getIdx(i, todos);
+
+            if (selectedIdx == -1) continue;
+
+            const std::string help_string = R"(
+======================|Edit|======================
+t: Edit the Titel
+d: Edit the Description
+q: Quit the Editor
+==================================================
+)";
+
+            std::string _i;
+
+            todo *selectedTodo = &todos[selectedIdx];
+
+            while (true)
+            {
+                std::cout << help_string << std::endl;
+                std::getline(std::cin, _i);
+
+                if (_i == "t")
+                {
+
+                    std::string newTitel;
+                    
+                    std::cout << "Old Titel: " << selectedTodo->Titel << std::endl;
+
+                    std::cout << "New Titel: ";
+
+                    std::cin >> newTitel;
+
+                    if (newTitel.empty())
+                    {
+                        std::cout << "invalid Titel" << std::endl;
+                        continue;
+                    }
+
+                    selectedTodo->Titel = newTitel;
+
+
+                } else if (_i == "d")
+                {
+                    std::string newDescription;
+                    
+                    std::cout << "Old Description: " <<  selectedTodo->Description << std::endl;
+
+                    std::cout << "New Description: ";
+
+                    std::cin >> newDescription;
+
+                    selectedTodo->Titel = newDescription;
+                } else if (_i == "q")
+                {
+                    break;
+                } else if (_i.empty())
+                {
+                    continue;
+                } else
+                {
+                    std::cout << "Invalid Command" << std::endl;
+                    continue;
+                }
+        
+            }
+            
         } else if (i == "q")
         {
             exit(0);
