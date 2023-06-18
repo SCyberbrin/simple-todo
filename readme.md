@@ -12,5 +12,5 @@
 ### Todos:
 - [x] Add Editing (e) Option.
 - [ ] Store the Todos to a file.
-- [ ] Ask user if sure to delete Todo
+- [x] Ask user if sure to delete Todo
 - [ ] move command for Todos to other id (mv).
