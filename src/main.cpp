@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include "todo.cpp"
+#include "ui_utils.cpp"
 
 #define clear cout << "\033[H\033[J"
 
@@ -113,11 +114,12 @@ int main(int argc, char const *argv[])
     std::string i;
 
     std::cout << help_string << std::endl;
-    
+
     while (true)
     {
         std::cout << "Command: ";
         std::getline(std::cin, i);
+
 
         if (i == "h")
         {
@@ -134,6 +136,8 @@ int main(int argc, char const *argv[])
             int selectedIdx = getIdx(i, todos);
 
             if (selectedIdx == -1) continue;
+
+            if (!askUser("Are you sure you want to delete it?")) continue;
 
             todos.erase(todos.begin() + selectedIdx);
             
