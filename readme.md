@@ -13,4 +13,7 @@
 - [x] Add Editing (e) Option.
 - [ ] Store the Todos to a file.
 - [x] Ask user if sure to delete Todo
-- [ ] move command for Todos to other id (mv).
+- [x] Move command for Todos to other id (mv).
+- [ ] Use ncurse for tui.
+- [ ] Add remaining time (Optional).
+- [ ] Add Groups for todos
