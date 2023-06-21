@@ -6,7 +6,7 @@
 **a**: Add an new Todo.<br>
 **e \<id>**: Edit the existing Todo.<br>
 **r \<id>**: Remove a specific Todo based on the Id.<br>
-**mv \<fromId> \<toId>**: Moves a todo to a different Id.
+**mv \<fromId> \<toId>**: Moves a todo to a different Id.<br>
 **q**: Quit the Application<br>
 
 
