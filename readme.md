@@ -16,4 +16,5 @@
 - [x] Move command for Todos to other id (mv).
 - [ ] Use ncurse for tui.
 - [ ] Add remaining time (Optional).
-- [ ] Add Groups for todos
+- [ ] Add Groups for todos.
+- [ ] Add Option for the todos repeat.
