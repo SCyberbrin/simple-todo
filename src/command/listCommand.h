@@ -9,12 +9,10 @@
 
 class ListCommand : public Command
 {
-private:
-    int index = 0;
 public:
     void execute(const std::vector<std::string>& args) override 
     {
-        
+        int index = 0;
         std::cout << "===================|List Todo|====================" << std::endl;
 
         for (todo &_todo : TodoManager::getTodos())

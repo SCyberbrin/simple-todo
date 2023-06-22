@@ -8,13 +8,12 @@
 
 class EditCommand : public Command
 {
-private:
-    int selectedIdx;
-    todo *selectedTodo;
 public:
     void execute(const std::vector<std::string>& args) override 
     {
-
+        int selectedIdx;
+        todo *selectedTodo;
+        
         try {
             selectedIdx = std::stoi(args[0]);
         } catch (const std::invalid_argument& e) {

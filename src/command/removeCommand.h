@@ -8,9 +8,6 @@
 
 class RemoveCommand : public Command
 {
-private:
-    std::string titel;
-    std::string description;
 public:
     void execute(const std::vector<std::string>& args) override 
     {

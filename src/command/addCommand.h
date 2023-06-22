@@ -7,12 +7,12 @@
 
 class AddCommand : public Command
 {
-private:
-    std::string titel;
-    std::string description;
 public:
     void execute(const std::vector<std::string>& args) override 
     {
+
+        std::string titel;
+        std::string description;
 
         std::cout << "====================|Add Todo|====================" << std::endl;
         

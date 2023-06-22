@@ -7,16 +7,14 @@
 
 class MoveCommand : public Command
 {
-private:
-    int fromIdx, toIdx;
-
 public:
     void execute(const std::vector<std::string>& args) override {
-        if (args.size() != 3) {
+        if (args.size() != 2) {
             std::cout << "Invalid input for mv command." << std::endl;
             return;
         }
 
+        int fromIdx, toIdx;
 
         try {
             fromIdx = std::stoi(args[0]);
