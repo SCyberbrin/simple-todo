@@ -17,12 +17,25 @@ public:
 
         for (todo &_todo : TodoManager::getTodos())
         {
-            std::cout << index << ": " << _todo.Titel << std::endl;
+            std::cout << ckeckbox(_todo.checked) << " " << index << ": " << _todo.Titel << std::endl;
 
             ++index;
         }
         std::cout << "==================================================" << std::endl;
     }
+
+private:
+    std::string ckeckbox(bool checked)
+    {
+        if (checked)
+        {
+            return "[x]";
+        }
+
+        return "[ ]";
+    }
+
 };
+
 
 #endif

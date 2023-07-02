@@ -16,6 +16,6 @@
 - [x] Ask user if sure to delete Todo
 - [x] Move command for Todos to other id (mv).
 - [ ] Add remaining time (Optional).
-- [ ] Add Checkbox for everytodo.
+- [x] Add Checkbox for everytodo.
 - [ ] Add Groups for todos.
 - [ ] Add Option for the todos repeat.

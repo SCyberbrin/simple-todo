@@ -8,6 +8,7 @@
 #include "command/addCommand.h"
 #include "command/listCommand.h"
 #include "command/editCommand.h"
+#include "command/checkedCommand.h"
 #include "command/removeCommand.h"
 
 #define clear std::cout << "\033[H\033[J"
@@ -19,6 +20,7 @@ h: To Show this Page
 l: Display all Todos.
 a: Add an new Todo.
 e <id>: Edit the existing Todo.
+c <id>: Check Todo's Checkbox.
 r <id>: Remove a specific Todo based on the Id.
 mv <fromId> <toId>: Moves a todo to a different Id.
 q: Quit the Application
@@ -50,6 +52,9 @@ int main(int argc, char const *argv[])
 
     // Register the 'e' command
     cm.registerCommand("e", std::make_unique<EditCommand>());
+
+    // Register the 'c' command
+    cm.registerCommand("c", std::make_unique<CheckedCommand>());
 
     // Register the 'r' command
     cm.registerCommand("r", std::make_unique<RemoveCommand>());
