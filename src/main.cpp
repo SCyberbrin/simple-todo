@@ -1,4 +1,5 @@
 #include "todoManager/todoManager.h"
+#include "fileIO.h"
 
 #include <iostream>
 #include <sstream>
@@ -43,6 +44,8 @@ std::vector<std::string> tokenizeString(const std::string& input) {
 int main(int argc, char const *argv[])
 {
     CommandManager cm;
+    fileIO fio;
+    fio.loadTodos();
 
     // Register the 'a' command
     cm.registerCommand("a", std::make_unique<AddCommand>());
@@ -62,7 +65,7 @@ int main(int argc, char const *argv[])
     // Register the 'mv' command
     cm.registerCommand("mv", std::make_unique<MoveCommand>());
 
-    clear;
+    // clear;
 
     std::cout << help_string << std::endl;
     
@@ -74,8 +77,12 @@ int main(int argc, char const *argv[])
         std::vector<std::string> token_commands = tokenizeString(input);
 
         if (token_commands[0] == "q")
+        {
+            fio.saveTodos(TodoManager::getTodos());
             break;
-        else if (token_commands[0] == "h"){
+        }
+        else if (token_commands[0] == "h")
+        {
             std::cout << help_string << std::endl;
             continue;
         }

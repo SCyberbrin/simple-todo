@@ -12,7 +12,7 @@
 
 ### Todos:
 - [x] Add Editing (e) Option.
-- [ ] Store the Todos to a file.
+- [x] Store the Todos to a file.
 - [x] Ask user if sure to delete Todo
 - [x] Move command for Todos to other id (mv).
 - [ ] Add remaining time (Optional).
