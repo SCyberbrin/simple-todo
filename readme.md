@@ -18,4 +18,5 @@
 - [ ] Add remaining time (Optional).
 - [x] Add Checkbox for everytodo.
 - [ ] Add Groups for todos.
+- [ ] Add args support.
 - [ ] Add Option for the todos repeat.
