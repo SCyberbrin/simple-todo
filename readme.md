@@ -5,6 +5,7 @@
 **l**: Display all Todos.<br>
 **a**: Add an new Todo.<br>
 **e \<id>**: Edit the existing Todo.<br>
+**c <id>**: Check Todo's Checkbox.<br>
 **r \<id>**: Remove a specific Todo based on the Id.<br>
 **mv \<fromId> \<toId>**: Moves a todo to a different Id.<br>
 **q**: Quit the Application<br>
