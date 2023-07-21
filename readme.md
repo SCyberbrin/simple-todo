@@ -11,7 +11,19 @@
 **q**: Quit the Application<br>
 
 
-### Todos:
+## Build:
+Git clone the project and then cd to it.<br>
+In the end, execute those commands.<br>
+(no worries no trolling here just default CMake build commands ;3)
+https://cmake.org/cmake/help/latest/guide/tutorial/A%20Basic%20Starting%20Point.html#build-and-run
+```
+mkdir build
+cd build
+cmake ..
+cmake --build .
+```
+
+## Todos:
 - [x] Add Editing (e) Option.
 - [x] Store the Todos to a file.
 - [x] Ask user if sure to delete Todo
