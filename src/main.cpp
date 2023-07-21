@@ -65,7 +65,9 @@ int main(int argc, char const *argv[])
     // Register the 'mv' command
     cm.registerCommand("mv", std::make_unique<MoveCommand>());
 
-    // clear;
+    clear;
+    
+    std::cout << "Save file path: '" << fio.getPath() << "'\n";
 
     std::cout << help_string << std::endl;
     

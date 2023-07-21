@@ -3,6 +3,7 @@
 
 #include <filesystem>
 #include <iostream>
+#include <string>
 #include <fstream>
 #include <vector>
 #include <regex>
@@ -14,12 +15,19 @@ namespace fs = std::filesystem;
 class fileIO
 {
 private:
-    fs::path todoFilePath = ""; //todo: different path
+    #ifdef _WIN32
+        fs::path todoFilePath = getenv("USERPROFILE");
+    #elif __linux__
+        fs::path todoFilePath = getenv("HOME");
+    #elif __unix__
+        fs::path todoFilePath = getenv("HOME");
+    #endif
 public:
     fileIO();
 
     void saveTodos(std::vector<todo> const &todos);
     void loadTodos();
+    std::string getPath();
 };
 
 fileIO::fileIO()
@@ -62,5 +70,11 @@ inline void fileIO::loadTodos()
     }
     
     todoFile.close();
+}
+
+
+inline std::string fileIO::getPath()
+{
+    return todoFilePath.string();
 }
 #endif
